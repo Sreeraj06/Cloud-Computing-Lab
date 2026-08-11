@@ -1,0 +1,6 @@
+List<String> recipients = new List<String>{'sreerajsreelakshmi@gmail.com'};
+String emailSubject = 'Salesforce Test Email';
+String emailBody = '<h1>Success!</h1><p>Your Apex email service is working perfectly.</p>';
+
+// Execute the class method
+EmailService.sendEmail(recipients, emailSubject, emailBody, true);

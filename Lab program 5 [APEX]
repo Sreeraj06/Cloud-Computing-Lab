@@ -1,0 +1,30 @@
+public with sharing class EmailService {
+
+    public static void sendEmail(List<String> toAddresses, String subject, String body, Boolean isHtml) {
+        Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
+        
+        mail.setToAddresses(toAddresses);
+        mail.setSubject(subject);
+        
+        if (isHtml) {
+            mail.setHtmlBody(body);
+        } else {
+            mail.setPlainTextBody(body);
+        }
+        
+        List<Messaging.SendEmailResult> results = Messaging.sendEmail(new List<Messaging.SingleEmailMessage> { mail });
+        inspectResults(results);
+    }
+
+    private static void inspectResults(List<Messaging.SendEmailResult> results) {
+        for (Messaging.SendEmailResult result : results) {
+            if (result.isSuccess()) {
+                System.debug('Email sent successfully.');
+            } else {
+                for (Messaging.SendEmailError error : result.getErrors()) {
+                    System.debug('Email sending failed: ' + error.getMessage());
+                }
+            }
+        }
+    }
+}
